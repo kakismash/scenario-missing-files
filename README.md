@@ -5,8 +5,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Prerequisites
 
 Make sure you have the following software installed on your machine:
-- Angular 15.0.5     `npm i -g @angular/cli@15.0.5`
 - Node.js: 16.14.2   || if you have nvm installed, run `nvm install 16.14.2` and `nvm use 16.14.2`
+- Angular 15.0.5     `npm i -g @angular/cli@15.0.5`
 - npm: 8.5.0
 
 ## Installation
