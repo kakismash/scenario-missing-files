@@ -2,9 +2,12 @@ const express = require("express");
 const multer = require("multer");
 const yauzl = require("yauzl");
 const fs = require("fs");
+const cors = require("cors")
 
 const app = express();
 const upload = multer({ dest: "uploads/" }); // Set the destination folder for uploaded files
+
+app.use(cors())
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   const file = req.file;
@@ -118,7 +121,7 @@ const checkFile = async (file, res) => {
                     assetNames: [obj.assetName]
                   });
                 }
-                
+
               }
             }
           });
@@ -128,7 +131,7 @@ const checkFile = async (file, res) => {
       removeFiles();
       res.json({ missing });
       // Delete the file
-      
+
     });
   });
 };
