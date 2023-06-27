@@ -103,28 +103,7 @@ const checkFile = async (file, res) => {
 
         if (scene.objects) {
           const objects = scene.objects;
-          objects.forEach(obj => {
-            if (obj.src && obj.src.startsWith('media')) {
-              const objectPath = obj.src;
-              const objectExists = mediaFilesName.includes(objectPath);
-              console.log(`${objectPath} exists: ${objectExists}`);
-              if (!objectExists) {
-                if (missing.some(m => m.path === objectPath)) {
-                  const mm = missing.find(m => m.path === objectPath);
-                  mm.assetIds.push(obj.assetId);
-                  mm.assetNames.push(obj.assetName);
-                } else {
-                  missing.push({
-                    type: "object",
-                    path: objectPath,
-                    assetIds: [obj.assetId],
-                    assetNames: [obj.assetName]
-                  });
-                }
-
-              }
-            }
-          });
+          doObjectsCheck(objects, missing, mediaFilesName);
         }
       });
 
@@ -135,6 +114,34 @@ const checkFile = async (file, res) => {
     });
   });
 };
+
+
+const doObjectsCheck = (objects, missing, mediaFilesName) => {
+  objects.forEach(obj => {
+    if (obj.src && obj.src.startsWith('media')) {
+      const objectPath = obj.src;
+      const objectExists = mediaFilesName.includes(objectPath);
+      console.log(`${objectPath} exists: ${objectExists}`);
+      if (!objectExists) {
+        if (missing.some(m => m.path === objectPath)) {
+          const mm = missing.find(m => m.path === objectPath);
+          mm.assetIds.push(obj.assetId);
+          mm.assetNames.push(obj.assetName);
+        } else {
+          missing.push({
+            type: "object",
+            path: objectPath,
+            assetIds: [obj.assetId],
+            assetNames: [obj.assetName]
+          });
+        }
+      }
+    }
+    if (obj.objects && obj.objects.length > 0) {
+      doObjectsCheck(obj.objects, missing, mediaFilesName);
+    }
+  });
+}
 
 const removeFiles = () => {
   const folderPath = './uploads';
